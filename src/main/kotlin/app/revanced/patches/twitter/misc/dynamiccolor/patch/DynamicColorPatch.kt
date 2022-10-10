@@ -52,7 +52,7 @@ class DynamicColorPatch : ResourcePatch {
                 "twitter_blue_opacity_50" to "@android:color/system_accent1_200",
                 "twitter_blue_opacity_58" to "@android:color/system_accent1_300",
                 "deep_transparent_twitter_blue" to "@android:color/system_accent1_200",
-				"unread" to "@android:color/system_accent1_50"
+				"unread" to "@android:color/system_accent1_50",
                 "ic_launcher_background" to "#1DA1F2"
             ).forEach { (k, v) ->
                 val colorElement = document.createElement("color")
@@ -74,8 +74,8 @@ class DynamicColorPatch : ResourcePatch {
                 "twitter_blue_opacity_30" to "@android:color/system_accent1_50",
                 "twitter_blue_opacity_50" to "@android:color/system_accent1_100",
                 "twitter_blue_opacity_58" to "@android:color/system_accent1_200",
-                "deep_transparent_twitter_blue" to "@android:color/system_accent1_200"
-				"link_color" to "@android:color/system_accent3_600"
+                "deep_transparent_twitter_blue" to "@android:color/system_accent1_200",
+				"link_color" to "@android:color/system_accent3_600",
             ).forEach { (k, v) ->
                 val colorElement = document.createElement("color")
 
