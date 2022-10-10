@@ -17,19 +17,19 @@ import java.nio.file.Files
 @Name("dynamic-color")
 @Description("Replaces the default Twitter Blue with the users Material You palette.")
 @DynamicColorCompatibility
-@Version("0.0.2")
+@Version("0.0.1")
 class DynamicColorPatch : ResourcePatch {
     override fun execute(context: ResourceContext): PatchResult {
         val resDirectory = context["res"]
         if (!resDirectory.isDirectory) return PatchResultError("The res folder can not be found.")
 
-        val valuesDirectory = resDirectory.resolve("values")
-        if (!valuesDirectory.isDirectory) Files.createDirectories(valuesDirectory.toPath())
+        val valuesV31Directory = resDirectory.resolve("values-v31")
+        if (!valuesV31Directory.isDirectory) Files.createDirectories(valuesV31Directory.toPath())
 
-        val valuesNightDirectory = resDirectory.resolve("values-night")
-        if (!valuesNightDirectory.isDirectory) Files.createDirectories(valuesNightDirectory.toPath())
+        val valuesNightV31Directory = resDirectory.resolve("values-night-v31")
+        if (!valuesNightV31Directory.isDirectory) Files.createDirectories(valuesNightV31Directory.toPath())
 
-        listOf(valuesDirectory, valuesNightDirectory).forEach { it ->
+        listOf(valuesV31Directory, valuesNightV31Directory).forEach { it ->
             val colorsXml = it.resolve("colors.xml")
 
             if(!colorsXml.exists()) {
@@ -39,20 +39,20 @@ class DynamicColorPatch : ResourcePatch {
             }
         }
 
-        context.xmlEditor["res/values/colors.xml"].use { editor ->
+        context.xmlEditor["res/values-v31/colors.xml"].use { editor ->
             val document = editor.file
 
             mapOf(
-				"app_background" to "@android:color/system_accent1_10",
-                "ps__twitter_blue" to "@@android:color/system_accent1_400",
-                "ps__twitter_blue_pressed" to "@android:color/system_accent1_300",
+                "app_background" to "@android:color/system_accent1_10",
+				"unread" to "@android:color/system_accent1_50",
+                "ps__twitter_blue" to "@color/twitter_blue",
+                "ps__twitter_blue_pressed" to "@color/twitter_blue_fill_pressed",
                 "twitter_blue" to "@android:color/system_accent1_400",
                 "twitter_blue_fill_pressed" to "@android:color/system_accent1_300",
                 "twitter_blue_opacity_30" to "@android:color/system_accent1_100",
                 "twitter_blue_opacity_50" to "@android:color/system_accent1_200",
                 "twitter_blue_opacity_58" to "@android:color/system_accent1_300",
                 "deep_transparent_twitter_blue" to "@android:color/system_accent1_200",
-				"unread" to "@android:color/system_accent1_50",
                 "ic_launcher_background" to "#1DA1F2"
             ).forEach { (k, v) ->
                 val colorElement = document.createElement("color")
@@ -64,18 +64,18 @@ class DynamicColorPatch : ResourcePatch {
             }
         }
 
-        context.xmlEditor["res/values-night/colors.xml"].use { editor ->
+        context.xmlEditor["res/values-night-v31/colors.xml"].use { editor ->
             val document = editor.file
 
             mapOf(
-				"app_background" to "@android:color/system_accent1_900",
+                "app_background" to "@android:color/system_accent1_900",
+				"link_color" to "@android:color/system_accent3_600",
                 "twitter_blue" to "@android:color/system_accent1_200",
                 "twitter_blue_fill_pressed" to "@android:color/system_accent1_300",
                 "twitter_blue_opacity_30" to "@android:color/system_accent1_50",
                 "twitter_blue_opacity_50" to "@android:color/system_accent1_100",
                 "twitter_blue_opacity_58" to "@android:color/system_accent1_200",
-                "deep_transparent_twitter_blue" to "@android:color/system_accent1_200",
-				"link_color" to "@android:color/system_accent3_600",
+                "deep_transparent_twitter_blue" to "@android:color/system_accent1_200"
             ).forEach { (k, v) ->
                 val colorElement = document.createElement("color")
 
