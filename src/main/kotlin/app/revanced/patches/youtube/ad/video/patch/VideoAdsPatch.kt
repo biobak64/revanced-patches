@@ -41,18 +41,20 @@ class VideoAdsPatch : BytecodePatch(
             )
         )
 
-        LoadAdsFingerprint.result!!.mutableMethod.let { method ->
-            method.addInstructions(
-                0,
-                """ 
-                    invoke-static { }, Lapp/revanced/integrations/patches/VideoAdsPatch;->shouldShowAds()Z
-                    move-result v1
-                    if-nez v1, :show_video_ads
-                    const/4 v1, 0x0
-                    return-object v1
-                """,
-                listOf(ExternalLabel("show_video_ads", method.instruction(0)))
-            )
+        with(LoadAdsFingerprint.result!!) {
+            val insertIndex = scanResult.patternScanResult!!.startIndex
+            with(mutableMethod) {
+                addInstructions(
+                    insertIndex,
+                    """ 
+                            invoke-static { }, Lapp/revanced/integrations/patches/VideoAdsPatch;->shouldShowAds()Z
+                            move-result v4
+                            if-nez v4, :show_video_ads
+                            return-object v3
+                         """,
+                    listOf(ExternalLabel("show_video_ads", instruction(insertIndex)))
+                )
+            }
         }
 
         return PatchResultSuccess()
